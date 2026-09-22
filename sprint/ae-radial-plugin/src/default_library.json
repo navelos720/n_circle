@@ -1,0 +1,76 @@
+{
+  "libraryVersion": "1.0",
+  "rootPath": "C:/ProgramData/YourCompany/AETemplates/",
+  "categories": [
+    {
+      "id": "lower_thirds",
+      "name": "Lower Thirds",
+      "templates": [
+        {
+          "id": "lt_001",
+          "name": "Corporate Clean",
+          "thumbnail": "thumbnails/lt_001.jpg",
+          "aepFilePath": "lower_thirds/corporate_clean.aep",
+          "targetCompName": "Main_Render_Comp",
+          "placeholderLayerName": "LOGO_PLACEHOLDER",
+          "tags": ["clean", "corporate", "minimal", "business"],
+          "category": "lower_thirds",
+          "description": "Minimal 2-line corporate lower third with logo reveal"
+        },
+        {
+          "id": "lt_002",
+          "name": "Tech HUD Title",
+          "thumbnail": "thumbnails/lt_002.jpg",
+          "aepFilePath": "lower_thirds/tech_hud.aep",
+          "targetCompName": "TechHUD_Comp",
+          "placeholderLayerName": "TEXT_INPUT",
+          "tags": ["tech", "cyber", "hud", "modern"],
+          "category": "lower_thirds",
+          "description": "Futuristic cyberpunk HUD title overlay"
+        }
+      ]
+    },
+    {
+      "id": "transitions",
+      "name": "Transitions",
+      "templates": [
+        {
+          "id": "tr_001",
+          "name": "Glitch Transition",
+          "thumbnail": "thumbnails/tr_001.jpg",
+          "aepFilePath": "transitions/glitch_001.aep",
+          "targetCompName": "Glitch_Transition",
+          "tags": ["glitch", "fast", "distortion", "energy"],
+          "category": "transitions",
+          "description": "High energy RGB split glitch transition (1.5s)"
+        },
+        {
+          "id": "tr_002",
+          "name": "Smooth Camera Whip",
+          "thumbnail": "thumbnails/tr_002.jpg",
+          "aepFilePath": "transitions/camera_whip.aep",
+          "targetCompName": "Whip_Transition",
+          "tags": ["whip", "motion blur", "cinematic"],
+          "category": "transitions",
+          "description": "Seamless camera whip pan with optical motion blur"
+        }
+      ]
+    },
+    {
+      "id": "backgrounds",
+      "name": "Backgrounds & Elements",
+      "templates": [
+        {
+          "id": "bg_001",
+          "name": "Looping Grid BG",
+          "thumbnail": "thumbnails/bg_001.jpg",
+          "aepFilePath": "backgrounds/looping_grid.aep",
+          "targetCompName": "Grid_BG_Loop",
+          "tags": ["loop", "grid", "abstract", "dark"],
+          "category": "backgrounds",
+          "description": "Infinite seamless looping perspective grid background"
+        }
+      ]
+    }
+  ]
+}

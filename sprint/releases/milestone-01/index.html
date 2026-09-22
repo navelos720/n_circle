@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company After Effects Radial Suite</title>
+    <link rel="stylesheet" href="./src/styles.css">
+    <!-- Adobe CEP CSInterface library -->
+    <script src="./src/lib/CSInterface.js"></script>
+</head>
+<body class="theme-dark">
+    <!-- App Container -->
+    <div id="app-root">
+        <!-- Suite Panel View -->
+        <main id="suite-panel" class="panel-container">
+            <!-- Header -->
+            <header class="panel-header">
+                <div class="search-bar-wrapper">
+                    <svg class="icon search-icon" viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z" />
+                    </svg>
+                    <input type="text" id="library-search-input" placeholder="Search shortcuts, effects, templates..." autocomplete="off" />
+                    <button id="search-clear-btn" class="icon-button hidden" title="Clear search">&times;</button>
+                </div>
+
+                <div class="header-controls">
+                    <select id="category-filter-select" class="dropdown-control">
+                        <option value="all">All Categories</option>
+                        <option value="ae_command">Shortcuts</option>
+                        <option value="menu_item">Menu Items</option>
+                        <option value="effect">Effects</option>
+                        <option value="aep_file">AEP Files</option>
+                        <option value="aep_template">Templates</option>
+                    </select>
+
+                    <div class="view-toggle-group">
+                        <button id="view-grid-btn" class="icon-button active" title="Grid View">
+                            <svg class="icon" viewBox="0 0 24 24"><path fill="currentColor" d="M3,3V11H11V3H3M5,5H9V9H5V5M13,3V11H21V3H13M15,5H19V9H15V5M3,13V21H11V13H3M5,15H9V19H5V15M13,13V21H21V13H13M15,15H19V19H15V15Z" /></svg>
+                        </button>
+                        <button id="view-list-btn" class="icon-button" title="List View">
+                            <svg class="icon" viewBox="0 0 24 24"><path fill="currentColor" d="M3,4H21V6H3V4M3,11H21V13H3V11M3,18H21V20H3V18Z" /></svg>
+                        </button>
+                    </div>
+
+                    <button id="open-radial-btn" class="accent-button" title="Test/Open Radial Wheel (Alt+Space)">
+                        <svg class="icon" viewBox="0 0 24 24"><path fill="currentColor" d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M12,6A6,6 0 0,0 6,12A6,6 0 0,0 12,18A6,6 0 0,0 18,12A6,6 0 0,0 12,6M12,8A4,4 0 0,1 16,12A4,4 0 0,1 12,16A4,4 0 0,1 8,12A4,4 0 0,1 12,8Z"/></svg>
+                        <span>Wheel</span>
+                    </button>
+
+                    <button id="open-settings-btn" class="icon-button" title="Settings & Wheel Editor">
+                        <svg class="icon" viewBox="0 0 24 24"><path fill="currentColor" d="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.21,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.21,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.67 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z"/></svg>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Main Item Content Area -->
+            <section id="library-content-view" class="cards-container grid-view">
+                <!-- Dynamic cards populated via SuitePanel.js -->
+            </section>
+
+            <!-- Empty State -->
+            <div id="library-empty-state" class="empty-state-view hidden">
+                <svg class="empty-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-4.86 8.86l-3 3.87L9 13.14 6 17h12l-3.86-5.14z"/></svg>
+                <h3 class="empty-title">No items found</h3>
+                <p class="empty-desc">No commands, effects, or templates matched your criteria.</p>
+                <button id="rebuild-index-empty-btn" class="secondary-button">Rebuild Library Index</button>
+            </div>
+
+            <!-- Footer / Status Bar -->
+            <footer class="panel-footer">
+                <span id="status-bar-text" class="status-text">Library Loaded: 0 Items</span>
+                <button id="rebuild-index-footer-btn" class="footer-action-btn" title="Scan configured rootPath for templates">
+                    <svg class="icon small-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M17.65,6.35C16.2,4.9 14.21,4 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20C15.73,20 18.84,17.45 19.73,14H17.65C16.83,16.33 14.61,18 12,18A6,6 0 0,1 6,12A6,6 0 0,1 12,6C13.66,6 15.14,6.69 16.22,7.78L13,11H20V4L17.65,6.35Z"/></svg>
+                    <span>Rebuild Index</span>
+                </button>
+            </footer>
+        </main>
+
+        <!-- Radial Overlay Component (Spawned on Hotkey / Demand) -->
+        <div id="radial-overlay-layer" class="radial-overlay hidden">
+            <div id="radial-menu-root" class="radial-menu">
+                <!-- SVG Canvas for Pie Wedges and Hub -->
+                <svg id="radial-svg-canvas" class="radial-canvas" viewBox="-220 -220 440 440">
+                    <g id="outer-ring-group" class="outer-ring-group hidden"></g>
+                    <g id="inner-ring-group" class="inner-ring-group"></g>
+                    <g id="center-hub-group" class="center-hub-group">
+                        <circle class="center-hub-bg" cx="0" cy="0" r="46"></circle>
+                        <text id="center-hub-label" class="center-hub-text" x="0" y="5" text-anchor="middle">CLOSE</text>
+                    </g>
+                </svg>
+            </div>
+        </div>
+
+        <!-- Wheel Settings & App Preferences Modal -->
+        <div id="settings-modal" class="modal-overlay hidden">
+            <div class="modal-dialog">
+                <div class="modal-header">
+                    <h2 class="modal-title">Suite Settings & Wheel Editor</h2>
+                    <button id="close-settings-modal-btn" class="icon-button close-modal-btn" title="Close Settings">&times;</button>
+                </div>
+
+                <!-- Tabs -->
+                <nav class="modal-tabs">
+                    <button class="modal-tab-btn active" data-tab="tab-wheel-layout">Wheel Layout</button>
+                    <button class="modal-tab-btn" data-tab="tab-library">Library</button>
+                    <button class="modal-tab-btn" data-tab="tab-appearance">Appearance & Behavior</button>
+                    <button class="modal-tab-btn" data-tab="tab-about">About</button>
+                </nav>
+
+                <div class="modal-body">
+                    <!-- Tab 1: Wheel Layout Editor -->
+                    <div id="tab-wheel-layout" class="tab-pane active">
+                        <div class="wheel-editor-container">
+                            <!-- Left: Live Wheel Preview -->
+                            <div class="wheel-preview-column">
+                                <div class="profile-select-bar">
+                                    <label for="editor-profile-select">Profile:</label>
+                                    <select id="editor-profile-select" class="dropdown-control"></select>
+                                    <button id="reset-profile-btn" class="text-button" title="Reset this profile to Company Default">Reset to Default</button>
+                                </div>
+                                <div id="wheel-editor-preview" class="editor-wheel-preview">
+                                    <!-- Dynamic visual slot arrangement -->
+                                </div>
+                                <div class="editor-instructions">
+                                    <p>💡 Click a slot to edit or select an item from the right to assign. Drag off to remove.</p>
+                                </div>
+                            </div>
+
+                            <!-- Right: Available Items Library -->
+                            <div class="wheel-library-column">
+                                <div class="item-search-wrapper">
+                                    <input type="text" id="editor-item-search" placeholder="Filter available items..." />
+                                </div>
+                                <div class="item-category-tabs">
+                                    <button class="item-cat-btn active" data-cat="all">All</button>
+                                    <button class="item-cat-btn" data-cat="ae_command">Shortcuts</button>
+                                    <button class="item-cat-btn" data-cat="menu_item">Menu</button>
+                                    <button class="item-cat-btn" data-cat="effect">Effects</button>
+                                    <button class="item-cat-btn" data-cat="aep_file">AEPs</button>
+                                    <button class="item-cat-btn" data-cat="folder">Folders</button>
+                                </div>
+                                <div id="editor-items-list" class="editor-items-list">
+                                    <!-- Dynamic available items -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tab 2: Library Settings -->
+                    <div id="tab-library" class="tab-pane">
+                        <div class="settings-form-group">
+                            <label class="form-label" for="setting-root-path">Company Assets Root Path:</label>
+                            <p class="form-desc">Folder containing company templates, AEPs, and assets.</p>
+                            <div class="path-input-group">
+                                <input type="text" id="setting-root-path" value="C:/ProgramData/YourCompany/AETemplates/" />
+                                <button id="browse-root-path-btn" class="secondary-button">Browse...</button>
+                            </div>
+                        </div>
+                        <div class="settings-form-group">
+                            <label class="form-label">Library Index Management:</label>
+                            <p class="form-desc">Scans the assets directory and rebuilds the local <code>library.json</code> database.</p>
+                            <button id="settings-rebuild-index-btn" class="primary-button">Rebuild Library Index Now</button>
+                        </div>
+                        <div class="settings-form-group">
+                            <label class="form-label">Add Custom AEP Project:</label>
+                            <p class="form-desc">Add a standalone .aep project reference directly to your library.</p>
+                            <button id="add-aep-reference-btn" class="secondary-button">+ Add AEP File Reference</button>
+                        </div>
+                    </div>
+
+                    <!-- Tab 3: Appearance & Behavior -->
+                    <div id="tab-appearance" class="tab-pane">
+                        <div class="settings-form-group">
+                            <label class="form-label">Activation Trigger:</label>
+                            <label class="radio-label">
+                                <input type="radio" name="setting-activation-trigger" value="hotkey" checked />
+                                <span>Hotkey Only (Alt+Space)</span>
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="setting-activation-trigger" value="hotkey_and_hold" />
+                                <span>Hotkey + Right-Click-Hold</span>
+                            </label>
+                        </div>
+                        <div class="settings-form-group">
+                            <label class="form-label" for="setting-hold-delay">Right-Click Hold Delay (<span id="hold-delay-value">200</span>ms):</label>
+                            <input type="range" id="setting-hold-delay" min="50" max="500" step="25" value="200" />
+                        </div>
+                        <div class="settings-form-group">
+                            <label class="form-label">Interaction Style:</label>
+                            <label class="radio-label">
+                                <input type="radio" name="setting-interaction-mode" value="gesture" checked />
+                                <span>Gesture Mode (Drag & Release)</span>
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="setting-interaction-mode" value="click" />
+                                <span>Click-to-Select Mode</span>
+                            </label>
+                        </div>
+                        <div class="settings-form-group">
+                            <label class="form-label" for="setting-ui-scale">UI Scale:</label>
+                            <select id="setting-ui-scale" class="dropdown-control">
+                                <option value="1.0">100% (Default)</option>
+                                <option value="1.25">125%</option>
+                                <option value="1.5">150%</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Tab 4: About -->
+                    <div id="tab-about" class="tab-pane">
+                        <div class="about-pane-content">
+                            <h3>Company After Effects Radial Suite</h3>
+                            <p class="version-tag">Version 1.0.0 (Milestone 1 Foundation Build)</p>
+                            <p class="about-desc">An ultra-fast, offline-first productivity accelerator and nested radial command menu for Adobe After Effects.</p>
+                            <div class="about-meta">
+                                <div><strong>Architecture:</strong> Adobe CEP + ExtendScript Engine</div>
+                                <div><strong>Storage:</strong> Offline Local JSON (<code>library.json</code>, <code>wheel_config.json</code>)</div>
+                                <div><strong>Platform:</strong> Windows (AE 2020+)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button id="save-settings-btn" class="primary-button">Save & Apply Changes</button>
+                    <button id="cancel-settings-btn" class="secondary-button">Close</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Shared Toast Container -->
+        <div id="toast-container" class="toast-container" aria-live="polite"></div>
+    </div>
+
+    <!-- Application Scripts -->
+    <script type="module" src="./src/main.js"></script>
+</body>
+</html>

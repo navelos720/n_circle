@@ -1,0 +1,189 @@
+{
+  "activeProfile": "Company Default",
+  "profiles": [
+    {
+      "name": "Company Default",
+      "description": "Standard production profile with fast layer tools, animation shortcuts, and effects",
+      "slots": [
+        {
+          "position": 0,
+          "id": "cmd_easy_ease",
+          "type": "ae_command",
+          "commandId": 1056,
+          "label": "Easy Ease",
+          "icon": "easy_ease"
+        },
+        {
+          "position": 1,
+          "id": "folder_effects",
+          "type": "folder",
+          "label": "Effects",
+          "icon": "folder_fx",
+          "children": [
+            {
+              "id": "fx_glow",
+              "type": "effect",
+              "effectName": "ADBE Glo2",
+              "label": "Glow",
+              "icon": "fx_glow"
+            },
+            {
+              "id": "fx_fast_box_blur",
+              "type": "effect",
+              "effectName": "ADBE Fast Blur",
+              "label": "Fast Blur",
+              "icon": "fx_blur"
+            },
+            {
+              "id": "fx_curves",
+              "type": "effect",
+              "effectName": "ADBE CurvesCustom",
+              "label": "Curves",
+              "icon": "fx_curves"
+            },
+            {
+              "id": "fx_drop_shadow",
+              "type": "effect",
+              "effectName": "ADBE Drop Shadow",
+              "label": "Drop Shadow",
+              "icon": "fx_shadow"
+            },
+            {
+              "id": "fx_gradient_ramp",
+              "type": "effect",
+              "effectName": "ADBE Ramp",
+              "label": "Gradient Ramp",
+              "icon": "fx_gradient"
+            },
+            {
+              "id": "fx_transform",
+              "type": "effect",
+              "effectName": "ADBE Geometry2",
+              "label": "Transform FX",
+              "icon": "fx_transform"
+            },
+            {
+              "id": "fx_hue_saturation",
+              "type": "effect",
+              "effectName": "ADBE HUE SATURATION",
+              "label": "Hue/Sat",
+              "icon": "fx_color"
+            },
+            {
+              "id": "fx_levels",
+              "type": "effect",
+              "effectName": "ADBE Pro Levels2",
+              "label": "Levels",
+              "icon": "fx_levels"
+            }
+          ]
+        },
+        {
+          "position": 2,
+          "id": "cmd_new_null",
+          "type": "ae_command",
+          "commandId": 2797,
+          "label": "New Null",
+          "icon": "null_layer"
+        },
+        {
+          "position": 3,
+          "id": "cmd_new_adjustment",
+          "type": "ae_command",
+          "commandId": 2798,
+          "label": "Adjustment Layer",
+          "icon": "adjustment_layer"
+        },
+        {
+          "position": 4,
+          "id": "cmd_precompose",
+          "type": "ae_command",
+          "commandId": 2073,
+          "label": "Pre-compose",
+          "icon": "precompose"
+        },
+        {
+          "position": 5,
+          "id": "cmd_split_layer",
+          "type": "ae_command",
+          "commandId": 2150,
+          "label": "Split Layer",
+          "icon": "split_layer"
+        },
+        {
+          "position": 6,
+          "id": "cmd_center_anchor_layer",
+          "type": "ae_command",
+          "commandId": 2357,
+          "label": "Center Anchor",
+          "icon": "center_anchor"
+        },
+        {
+          "position": 7,
+          "id": "folder_aep_templates",
+          "type": "folder",
+          "label": "AEP Templates",
+          "icon": "folder_aep",
+          "children": [
+            {
+              "id": "lt_001",
+              "type": "aep_template",
+              "templateId": "lt_001",
+              "label": "Corp Lower Third",
+              "icon": "template"
+            },
+            {
+              "id": "tr_001",
+              "type": "aep_template",
+              "templateId": "tr_001",
+              "label": "Glitch Transition",
+              "icon": "template"
+            },
+            {
+              "id": "bg_001",
+              "type": "aep_template",
+              "templateId": "bg_001",
+              "label": "Looping Grid BG",
+              "icon": "template"
+            },
+            {
+              "id": "aep_brand_kit",
+              "type": "aep_file",
+              "aepFilePath": "projects/master_brand_kit.aep",
+              "label": "Brand Kit Project",
+              "icon": "aep_file"
+            },
+            {
+              "id": "cmd_new_comp",
+              "type": "ae_command",
+              "commandId": 2003,
+              "label": "New Comp",
+              "icon": "new_comp"
+            },
+            {
+              "id": "cmd_import_file",
+              "type": "ae_command",
+              "commandId": 2139,
+              "label": "Import File",
+              "icon": "import_file"
+            },
+            {
+              "id": "menu_purge_all",
+              "type": "menu_item",
+              "commandId": 10200,
+              "label": "Purge Cache",
+              "icon": "menu_purge"
+            },
+            {
+              "id": "cmd_increment_save",
+              "type": "ae_command",
+              "commandId": 13,
+              "label": "Increment Save",
+              "icon": "save_increment"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
