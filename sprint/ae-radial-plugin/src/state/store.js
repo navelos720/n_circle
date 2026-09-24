@@ -208,6 +208,89 @@ class StateStore {
         this.notify(['config']);
     }
 
+    updateSubmenuSlot(profileName, parentSlotIndex, subSlotIndex, itemData) {
+        const profile = this.state.config.profiles.find(p => p.name === profileName);
+        if (!profile) {
+            this.addToast("Profile not found", "error");
+            return;
+        }
+
+        const parentSlot = profile.slots[parentSlotIndex];
+        if (!parentSlot) {
+            this.addToast("Parent slot not found", "error");
+            return;
+        }
+
+        // Initialize children array if it doesn't exist
+        if (!parentSlot.children) {
+            parentSlot.children = [];
+        }
+
+        // Update or add submenu slot
+        const merged = { position: subSlotIndex, ...itemData };
+        const existingSlot = parentSlot.children.find(s => s.position === subSlotIndex);
+        
+        if (existingSlot) {
+            Object.assign(existingSlot, merged);
+        } else {
+            parentSlot.children.push(merged);
+        }
+
+        // Keep positions sequential
+        parentSlot.children.sort((a, b) => a.position - b.position);
+
+        this.state.isDirty = true;
+        this.saveConfig();
+        this.notify(['config']);
+    }
+
+    addLibraryItem(newItem) {
+        if (!this.state.library) return;
+        
+        // Check if item already exists
+        const exists = this.state.library.items.find(item => item.id === newItem.id);
+        if (exists) {
+            this.addToast("Item already exists in library", "warning");
+            return;
+        }
+
+        this.state.library.items.push(newItem);
+        
+        // Persist library to localStorage
+        try {
+            localStorage.setItem('company_ae_radial_user_library', JSON.stringify(this.state.library));
+        } catch (e) {
+            console.error('Failed to persist library', e);
+        }
+
+        this.notify(['library']);
+    }
+
+    resetProfileToDefault() {
+        // This reloads from the original default_config.json
+        // In a real implementation, you'd fetch the original default config
+        // For now, we'll just clear localStorage and reload
+        localStorage.removeItem('company_ae_radial_user_config');
+        
+        // Trigger a reload to fetch fresh defaults
+        // In production, you'd want to fetch from default_config.json instead
+        window.location.reload();
+    }
+
+    persistConfig() {
+        // Explicit save method that can be called when user clicks Save
+        this.saveConfig();
+        
+        // Also persist library if it has custom items
+        if (this.state.library) {
+            try {
+                localStorage.setItem('company_ae_radial_user_library', JSON.stringify(this.state.library));
+            } catch (e) {
+                console.error('Failed to persist library', e);
+            }
+        }
+    }
+
     saveConfig() {
         try {
             localStorage.setItem('company_ae_radial_user_config', JSON.stringify(this.state.config));

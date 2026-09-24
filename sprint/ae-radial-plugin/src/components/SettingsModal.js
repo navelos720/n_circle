@@ -1,6 +1,7 @@
 /**
  * SettingsModal.js — Wheel Settings and Profile Configuration Modal
  * Company After Effects Radial Suite
+ * Milestone 3: Visual wheel editor with drag-and-drop slot assignment
  */
 
 import { store } from '../state/store.js';
@@ -22,13 +23,21 @@ export class SettingsModal {
 
         this.selectedCategory = 'all';
         this.itemSearchQuery = '';
+        this.draggedItem = null;
+        this.editingSubmenu = null; // null = root wheel, or slot index for submenu editing
 
         this.initEvents();
+        
+        // Subscribe to store updates to re-render when profile changes
+        store.subscribe((state) => {
+            this.render(state);
+        });
     }
 
     initEvents() {
         const closeModal = () => {
             if (this.modal) this.modal.classList.add('hidden');
+            this.editingSubmenu = null; // Reset submenu state when closing
         };
 
         if (this.closeBtn) this.closeBtn.addEventListener('click', closeModal);
@@ -54,6 +63,7 @@ export class SettingsModal {
         if (this.profileSelect) {
             this.profileSelect.addEventListener('change', (e) => {
                 store.setActiveProfile(e.target.value);
+                this.editingSubmenu = null; // Reset submenu view on profile change
             });
         }
 
@@ -83,6 +93,7 @@ export class SettingsModal {
                     const rootPath = this.rootPathInput.value.trim();
                     store.updateSettings({ rootPath });
                 }
+                store.persistConfig();
                 store.addToast("Settings saved successfully.", "success", 2000);
                 closeModal();
             });
@@ -92,9 +103,26 @@ export class SettingsModal {
         if (this.resetDefaultBtn) {
             this.resetDefaultBtn.addEventListener('click', () => {
                 if (confirm("Reset current wheel profile to company defaults?")) {
-                    localStorage.removeItem('company_ae_radial_user_config');
-                    location.reload();
+                    store.resetProfileToDefault();
+                    this.editingSubmenu = null;
+                    store.addToast("Profile reset to company defaults.", "success", 2000);
                 }
+            });
+        }
+
+        // Add AEP Reference Button
+        const addAepBtn = document.getElementById('add-aep-reference-btn');
+        if (addAepBtn) {
+            addAepBtn.addEventListener('click', () => {
+                this.showAddAepDialog();
+            });
+        }
+
+        // Rebuild Index Button
+        const rebuildIndexBtn = document.getElementById('settings-rebuild-index-btn');
+        if (rebuildIndexBtn) {
+            rebuildIndexBtn.addEventListener('click', () => {
+                store.addToast("Library indexing is a dev-time tool - see LIBRARY_INDEXING.md", "info", 3000);
             });
         }
     }
@@ -125,45 +153,253 @@ export class SettingsModal {
         const profile = store.getActiveProfile();
         if (!profile) return;
 
-        // Render Slots configuration
-        if (this.slotsContainer) {
-            this.slotsContainer.innerHTML = '';
-            profile.slots.forEach(slot => {
-                const card = document.createElement('div');
-                card.className = 'slot-config-card';
+        // Render Visual Wheel Editor
+        this.renderVisualWheel(profile, library);
+        this.renderItemsList(state);
+    }
 
-                const leftDiv = document.createElement('div');
-                leftDiv.innerHTML = `<span class="slot-num">#${(slot.position || 0) + 1}</span> <strong>${slot.label || 'Empty'}</strong> <small style="color:var(--text-secondary)">(${slot.type || 'empty'})</small>`;
-                card.appendChild(leftDiv);
+    renderVisualWheel(profile, library) {
+        if (!this.slotsContainer) return;
 
-                // Re-assign dropdown
-                const select = document.createElement('select');
-                select.className = 'select-input';
+        const slots = this.editingSubmenu === null 
+            ? profile.slots 
+            : (profile.slots[this.editingSubmenu]?.children || []);
 
-                (library.items || []).forEach(libItem => {
-                    const opt = document.createElement('option');
-                    opt.value = libItem.id;
-                    opt.textContent = `${libItem.label} [${libItem.type}]`;
-                    if (libItem.id === slot.id) {
-                        opt.selected = true;
-                    }
-                    select.appendChild(opt);
-                });
+        this.slotsContainer.innerHTML = '';
 
-                select.addEventListener('change', (e) => {
-                    const chosenItem = (library.items || []).find(i => i.id === e.target.value);
-                    if (chosenItem) {
-                        store.updateSlot(profile.name, slot.position, chosenItem);
-                        store.addToast(`Slot ${(slot.position || 0) + 1} set to ${chosenItem.label}`, "info", 1500);
-                    }
-                });
-
-                card.appendChild(select);
-                this.slotsContainer.appendChild(card);
+        // Add back button if editing submenu
+        if (this.editingSubmenu !== null) {
+            const backBtn = document.createElement('div');
+            backBtn.className = 'submenu-back-btn';
+            backBtn.innerHTML = `← Back to Root Wheel`;
+            backBtn.addEventListener('click', () => {
+                this.editingSubmenu = null;
+                this.render(store.getState());
             });
+            this.slotsContainer.appendChild(backBtn);
         }
 
-        this.renderItemsList(state);
+        // Create visual wheel representation (simplified circular layout)
+        const wheelViz = document.createElement('div');
+        wheelViz.className = 'wheel-visual-editor';
+        wheelViz.style.cssText = 'position: relative; width: 400px; height: 400px; margin: 20px auto; border: 2px dashed var(--border); border-radius: 50%;';
+
+        const centerSize = 80;
+        const slotRadius = 140;
+        const slotSize = 60;
+
+        // Center hub (just visual, not interactive in editor)
+        const centerHub = document.createElement('div');
+        centerHub.className = 'wheel-center-hub';
+        centerHub.style.cssText = `position: absolute; top: 50%; left: 50%; width: ${centerSize}px; height: ${centerSize}px; margin: -${centerSize/2}px 0 0 -${centerSize/2}px; border-radius: 50%; background: var(--bg-secondary); border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 12px; color: var(--text-secondary);`;
+        centerHub.textContent = this.editingSubmenu === null ? 'ROOT' : 'SUBMENU';
+        wheelViz.appendChild(centerHub);
+
+        // Render each slot
+        slots.forEach((slot, index) => {
+            const angle = (index / slots.length) * 2 * Math.PI - Math.PI / 2;
+            const x = 200 + slotRadius * Math.cos(angle);
+            const y = 200 + slotRadius * Math.sin(angle);
+
+            const slotEl = document.createElement('div');
+            slotEl.className = 'wheel-slot-editor';
+            slotEl.dataset.slotIndex = index;
+            slotEl.style.cssText = `position: absolute; left: ${x}px; top: ${y}px; width: ${slotSize}px; height: ${slotSize}px; margin: -${slotSize/2}px 0 0 -${slotSize/2}px; border-radius: 8px; background: var(--bg-tertiary); border: 2px solid var(--border); display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s;`;
+
+            // Find library item for this slot
+            const libraryItem = library.items.find(item => item.id === slot.id);
+
+            // Slot content
+            const label = document.createElement('div');
+            label.style.cssText = 'font-size: 10px; text-align: center; padding: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; width: 100%;';
+            label.textContent = libraryItem ? libraryItem.label : 'Empty';
+            slotEl.appendChild(label);
+
+            const slotNum = document.createElement('div');
+            slotNum.style.cssText = 'font-size: 8px; color: var(--text-secondary);';
+            slotNum.textContent = `#${index + 1}`;
+            slotEl.appendChild(slotNum);
+
+            // Click to edit submenu if it's a folder
+            if (libraryItem && libraryItem.type === 'folder' && this.editingSubmenu === null) {
+                slotEl.style.borderColor = 'var(--accent)';
+                slotEl.addEventListener('click', () => {
+                    this.editingSubmenu = index;
+                    this.render(store.getState());
+                });
+            }
+
+            // Drag-and-drop: accept drops
+            slotEl.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                slotEl.style.background = 'var(--accent-bg)';
+                slotEl.style.borderColor = 'var(--accent)';
+            });
+
+            slotEl.addEventListener('dragleave', () => {
+                slotEl.style.background = 'var(--bg-tertiary)';
+                slotEl.style.borderColor = 'var(--border)';
+            });
+
+            slotEl.addEventListener('drop', (e) => {
+                e.preventDefault();
+                slotEl.style.background = 'var(--bg-tertiary)';
+                slotEl.style.borderColor = 'var(--border)';
+
+                if (this.draggedItem) {
+                    this.assignItemToSlot(index, this.draggedItem);
+                    this.draggedItem = null;
+                }
+            });
+
+            // Right-click to remove item
+            slotEl.addEventListener('contextmenu', (e) => {
+                e.preventDefault();
+                if (libraryItem) {
+                    if (confirm(`Remove "${libraryItem.label}" from slot ${index + 1}?`)) {
+                        this.clearSlot(index);
+                    }
+                }
+            });
+
+            wheelViz.appendChild(slotEl);
+        });
+
+        this.slotsContainer.appendChild(wheelViz);
+
+        // Add slot management buttons
+        const slotControls = document.createElement('div');
+        slotControls.style.cssText = 'text-align: center; margin-top: 20px;';
+        slotControls.innerHTML = `
+            <button class="secondary-button" id="add-slot-btn">+ Add Slot</button>
+            <button class="secondary-button" id="remove-slot-btn">− Remove Slot</button>
+            <p style="font-size: 12px; color: var(--text-secondary); margin-top: 8px;">
+                Current slots: ${slots.length} | Minimum: 7 | Right-click slot to remove item
+            </p>
+        `;
+        this.slotsContainer.appendChild(slotControls);
+
+        // Slot management button events
+        const addSlotBtn = document.getElementById('add-slot-btn');
+        if (addSlotBtn) {
+            addSlotBtn.addEventListener('click', () => this.addSlot());
+        }
+
+        const removeSlotBtn = document.getElementById('remove-slot-btn');
+        if (removeSlotBtn) {
+            removeSlotBtn.addEventListener('click', () => this.removeSlot());
+        }
+    }
+
+    assignItemToSlot(slotIndex, libraryItem) {
+        const profile = store.getActiveProfile();
+        if (!profile) return;
+
+        if (this.editingSubmenu === null) {
+            // Assigning to root wheel
+            store.updateSlot(profile.name, slotIndex, libraryItem);
+            store.addToast(`Assigned "${libraryItem.label}" to slot ${slotIndex + 1}`, "success", 2000);
+        } else {
+            // Assigning to submenu
+            store.updateSubmenuSlot(profile.name, this.editingSubmenu, slotIndex, libraryItem);
+            store.addToast(`Assigned "${libraryItem.label}" to submenu slot ${slotIndex + 1}`, "success", 2000);
+        }
+
+        this.render(store.getState());
+    }
+
+    clearSlot(slotIndex) {
+        const profile = store.getActiveProfile();
+        if (!profile) return;
+
+        const emptySlot = {
+            id: '',
+            label: 'Empty',
+            type: 'empty',
+            position: slotIndex
+        };
+
+        if (this.editingSubmenu === null) {
+            store.updateSlot(profile.name, slotIndex, emptySlot);
+        } else {
+            store.updateSubmenuSlot(profile.name, this.editingSubmenu, slotIndex, emptySlot);
+        }
+
+        store.addToast(`Cleared slot ${slotIndex + 1}`, "info", 1500);
+        this.render(store.getState());
+    }
+
+    addSlot() {
+        const profile = store.getActiveProfile();
+        if (!profile) return;
+
+        const slots = this.editingSubmenu === null 
+            ? profile.slots 
+            : (profile.slots[this.editingSubmenu]?.children || []);
+
+        const newSlot = {
+            id: '',
+            label: 'Empty',
+            type: 'empty',
+            position: slots.length
+        };
+
+        if (this.editingSubmenu === null) {
+            profile.slots.push(newSlot);
+        } else {
+            if (!profile.slots[this.editingSubmenu].children) {
+                profile.slots[this.editingSubmenu].children = [];
+            }
+            profile.slots[this.editingSubmenu].children.push(newSlot);
+        }
+
+        store.addToast(`Added slot ${slots.length + 1}`, "success", 1500);
+        this.render(store.getState());
+    }
+
+    removeSlot() {
+        const profile = store.getActiveProfile();
+        if (!profile) return;
+
+        const slots = this.editingSubmenu === null 
+            ? profile.slots 
+            : (profile.slots[this.editingSubmenu]?.children || []);
+
+        if (slots.length <= 7) {
+            store.addToast("Cannot remove slot - minimum 7 slots required", "error", 2000);
+            return;
+        }
+
+        if (confirm(`Remove slot ${slots.length}?`)) {
+            if (this.editingSubmenu === null) {
+                profile.slots.pop();
+            } else {
+                profile.slots[this.editingSubmenu].children.pop();
+            }
+            store.addToast(`Removed slot ${slots.length + 1}`, "info", 1500);
+            this.render(store.getState());
+        }
+    }
+
+    showAddAepDialog() {
+        const fileName = prompt("Enter .aep file name to add:");
+        if (!fileName) return;
+
+        const filePath = prompt("Enter full file path:");
+        if (!filePath) return;
+
+        const newAepItem = {
+            id: `aep_${Date.now()}`,
+            label: fileName,
+            type: 'aep_file',
+            category: 'aep_file',
+            path: filePath,
+            description: `Custom AEP file: ${fileName}`
+        };
+
+        store.addLibraryItem(newAepItem);
+        store.addToast(`Added AEP file: ${fileName}`, "success", 2000);
+        this.render(store.getState());
     }
 
     renderItemsList(state) {
@@ -179,11 +415,52 @@ export class SettingsModal {
         });
 
         this.itemsContainer.innerHTML = '';
+        
+        if (filtered.length === 0) {
+            const noResults = document.createElement('div');
+            noResults.style.cssText = 'padding: 20px; text-align: center; color: var(--text-secondary);';
+            noResults.textContent = 'No items found';
+            this.itemsContainer.appendChild(noResults);
+            return;
+        }
+
         filtered.forEach(item => {
             const row = document.createElement('div');
             row.className = 'library-item-card';
             row.style.marginBottom = '4px';
-            row.innerHTML = `<div class="item-left"><span class="item-badge badge-${item.type}">${(item.type || '').replace('_', ' ')}</span><span class="item-label">${item.label}</span></div>`;
+            row.style.cursor = 'grab';
+            row.draggable = true;
+            
+            row.innerHTML = `
+                <div class="item-left">
+                    <span class="item-badge badge-${item.type}">${(item.type || '').replace('_', ' ')}</span>
+                    <span class="item-label">${item.label}</span>
+                </div>
+                ${item.shortcut ? `<span class="item-shortcut" style="font-size: 11px; color: var(--text-secondary);">${item.shortcut}</span>` : ''}
+            `;
+
+            // Drag start
+            row.addEventListener('dragstart', (e) => {
+                this.draggedItem = item;
+                row.style.opacity = '0.5';
+                e.dataTransfer.effectAllowed = 'copy';
+            });
+
+            // Drag end
+            row.addEventListener('dragend', () => {
+                row.style.opacity = '1';
+                row.style.cursor = 'grab';
+            });
+
+            // Hover effect
+            row.addEventListener('mouseenter', () => {
+                row.style.background = 'var(--accent-bg)';
+            });
+
+            row.addEventListener('mouseleave', () => {
+                row.style.background = '';
+            });
+
             this.itemsContainer.appendChild(row);
         });
     }
