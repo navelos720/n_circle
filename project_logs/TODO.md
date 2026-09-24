@@ -33,6 +33,7 @@ Log versioning rule: freeze and roll to `TODO_2.md` past 900 lines.
 
 ## DEFERRED
 - [ ] AEP Template Injection (`../docs/AEP_INJECTION.md`) — pending resolution of OQ-11.
+- [ ] Debug and fix partially-working commands (Issue #1 from tester feedback) — Some commands show "Executed" toast but don't actually work in AE. Bridge connection is confirmed working. Likely causes: incorrect command IDs, missing context requirements, or commands needing different execution method. See `TESTER_FEEDBACK.md` for details.
 
 ## Next Action / Resume Point
 1. Receive and address human tester feedback from Milestone 2 testing in After Effects.

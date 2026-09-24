@@ -12,38 +12,51 @@ Log versioning rule: freeze and roll to `TESTER_FEEDBACK_2.md` past 900 lines.
 
 ---
 
-## CRITICAL ISSUE TO FIX
+## CRITICAL ISSUE - PARTIALLY RESOLVED
 
 ### Issue #1: Buttons Not Executing Actions in After Effects
-**Status**: 🔴 OPEN - NEEDS INVESTIGATION  
-**Priority**: CRITICAL - BLOCKS ALL FUNCTIONALITY  
-**Tester Report**: "The buttons are not functioning in after effects. (they are not connected)"
+**Status**: 🟡 PARTIALLY FIXED - Bridge now loads, but some commands don't work  
+**Priority**: MEDIUM - Some functionality working, some not  
 
-**What IS working**:
+**Progress Summary**:
+- ✅ **FIXED**: ExtendScript bridge now loads successfully (auto-detects and loads `hostScript.jsx` if missing)
+- ✅ **WORKING**: Some tools execute correctly (e.g., "New Shape Layer", "New Camera")
+- ⚠️ **ISSUE REMAINS**: Other commands show "Executed" toast notification but don't actually work in AE
+
+**What IS working now**:
 - Panel loads and displays correctly
 - UI is responsive (buttons hover, click events register)
 - Library items display in the Suite Panel
-- Radial wheel overlay can be summoned
+- ExtendScript bridge connects automatically (toast: "Bridge ready - all systems operational")
+- Some commands execute successfully:
+  - New Shape Layer
+  - New Camera
+  - (Other working commands to be identified during testing)
 
 **What is NOT working**:
-- Clicking any button/card in the panel does NOT execute actions in After Effects
-- No layers created, no effects applied, no shortcuts executed
-- Actions appear to do nothing when clicked
+- Some commands show success toast ("Executed: [command name]") but no action happens in After Effects
+- Examples of non-working commands: (to be documented)
+- Unclear which commands work vs don't work - needs systematic testing
 
-**User's Understanding**: "I'm guessing the functions have not been connected yet"
+**Root Cause Hypothesis**:
+- Bridge connection is now working (confirmed by successful commands)
+- Issue likely with specific command IDs or context requirements
+- Possible causes:
+  1. Incorrect `commandId` mapping for some shortcuts
+  2. Commands requiring specific AE context (comp selected, layer selected, etc.) but context check not failing
+  3. Some commands may need different execution method (not `app.executeCommand`)
 
-**Next Steps for AI**:
-1. Investigate the connection between panel UI buttons and ExtendScript bridge
-2. Check if `hostScript.jsx` is properly loaded and accessible
-3. Verify `actionExecutor.js` → `CSInterface.evalScript()` → `hostScript.jsx` flow
-4. Add debug logging to identify where the connection breaks
-5. Test with simple ExtendScript eval to isolate the issue
-6. Document findings and implement fix
+**Next Steps** (DEFERRED until after Milestone 3):
+1. Systematically test all library items and document which work vs don't work
+2. Compare working vs non-working command patterns
+3. Verify command IDs against Adobe's official command ID list
+4. Check if non-working commands have specific context requirements
+5. Add better error reporting from ExtendScript side to identify why commands fail silently
+6. Document findings and implement fixes
 
-**DO NOT**:
-- Do not break the existing UI functionality (panel must still load and display items)
-- Do not remove any existing features to fix this
-- Do not make changes that aren't directly related to fixing button execution
+**Files Modified**:
+- `sprint/ae-radial-plugin/src/main.js` — Added `checkExtendScriptBridge()` with auto-load functionality
+- `sprint/ae-radial-plugin/src/utils/actionExecutor.js` — Added debug logging
 
 ---
 

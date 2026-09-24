@@ -24,10 +24,15 @@ export class ActionExecutor {
      * Executes any wheel or library item safely
      */
     static async execute(item) {
+        console.log('[ActionExecutor] execute() called with item:', item);
+        
         if (!item) {
+            console.error('[ActionExecutor] No item provided');
             store.addToast("Cannot execute empty item.", "warning");
             return false;
         }
+
+        console.log('[ActionExecutor] Item type:', item.type, 'Label:', item.label);
 
         try {
             switch (item.type) {
@@ -61,17 +66,30 @@ export class ActionExecutor {
      * Execute an After Effects Command ID via ExtendScript
      */
     static async executeCommand(commandId, requiresSelection = false, label = "Command") {
+        console.log('[ActionExecutor] executeCommand() called');
+        console.log('[ActionExecutor] commandId:', commandId, 'requiresSelection:', requiresSelection, 'label:', label);
+        
         if (!commandId) {
+            console.error('[ActionExecutor] Missing command ID for', label);
             store.addToast(`Missing command ID for ${label}`, "warning");
             return false;
         }
 
         const cs = getCSInterface();
+        console.log('[ActionExecutor] CSInterface obtained:', cs ? 'YES' : 'NO');
+        console.log('[ActionExecutor] CSInterface type:', typeof cs);
+        
         const script = `CompanyRadialSuiteBridge.executeCommand(${commandId}, ${requiresSelection})`;
+        console.log('[ActionExecutor] About to call evalScript with:', script);
+        
         return new Promise((resolve) => {
             cs.evalScript(script, (resultStr) => {
+                console.log('[ActionExecutor] evalScript callback received. Result:', resultStr);
+                
                 try {
                     const res = JSON.parse(resultStr || "{}");
+                    console.log('[ActionExecutor] Parsed result:', res);
+                    
                     if (res.success) {
                         store.addToast(`Executed: ${label}`, "success", 1800);
                         resolve(true);
@@ -80,6 +98,7 @@ export class ActionExecutor {
                         resolve(false);
                     }
                 } catch (e) {
+                    console.error('[ActionExecutor] Error parsing result:', e);
                     store.addToast(`Bridge error: ${resultStr || e.message}`, "error");
                     resolve(false);
                 }
