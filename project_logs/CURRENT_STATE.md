@@ -51,3 +51,20 @@ Log versioning rule: when this file exceeds 900 lines, freeze it and continue in
 - **In Progress**: Handoff prepared — awaiting human tester feedback on Milestone 2 before starting Milestone 3.
 - **Blockers**: None.
 - **Next Recommended Action**: Receive and address human tester feedback from Milestone 2 testing in After Effects, then proceed to Milestone 3 per `../milestones/MILESTONE_3.md` (interactive Wheel Settings Editor slot assignments, custom profile manager, AEP file reference picker and missing-file recovery UI).
+
+---
+
+## Entry 4 — 2026-09-24 (Tester Feedback & Bridge Fix)
+- **Phase**: Post-Milestone 2 Testing & Bug Fixes.
+- **Completed**:
+  - Received and documented tester feedback in `TESTER_FEEDBACK.md` (1 critical issue, 2 feature suggestions).
+  - Diagnosed and partially fixed Issue #1: Buttons not executing actions in After Effects.
+  - Implemented automatic ExtendScript bridge loading in `main.js` with `checkExtendScriptBridge()` function.
+  - Bridge now auto-loads `hostScript.jsx` on panel startup (verified by "Bridge ready" toast).
+  - Confirmed partial success: some commands work (New Shape Layer, New Camera), others show "Executed" toast but don't work.
+  - Added diagnostic logging to `actionExecutor.js` for debugging execution flow.
+  - Documented 2 feature suggestions for future work: standalone wheel activation (FB-002) and wheel settings editor (already in Milestone 3).
+  - Committed and pushed all changes to GitHub repository (navelos720/n_circle).
+- **In Progress**: Ready to proceed with Milestone 3 implementation.
+- **Blockers**: None (remaining command execution issues deferred until after Milestone 3).
+- **Next Recommended Action**: Begin Milestone 3 per `../milestones/MILESTONE_3.md` — implement interactive Wheel Settings Editor with drag-and-drop slot assignment, profile management, and AEP file reference picker.
