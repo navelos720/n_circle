@@ -429,15 +429,16 @@ export class SettingsModal {
             row.className = 'library-item-card';
             row.style.marginBottom = '4px';
             row.style.cursor = 'grab';
-            row.draggable = true;
+                    row.setAttribute('draggable', 'true');
+                    row.dataset.item = JSON.stringify(item);
             
-            row.innerHTML = `
-                <div class="item-left">
-                    <span class="item-badge badge-${item.type}">${(item.type || '').replace('_', ' ')}</span>
-                    <span class="item-label">${item.label}</span>
-                </div>
-                ${item.shortcut ? `<span class="item-shortcut" style="font-size: 11px; color: var(--text-secondary);">${item.shortcut}</span>` : ''}
-            `;
+                    row.innerHTML = `
+                        <div class="item-left">
+                            <span class="item-badge badge-${item.type}">${(item.type || '').replace('_', ' ')}</span>
+                            <span class="item-label">${item.label}</span>
+                        </div>
+                        ${item.shortcut ? `<span class="item-shortcut" style="font-size: 11px; color: var(--text-secondary);">${item.shortcut}</span>` : ''}
+                    `;
 
             // Drag start
             row.addEventListener('dragstart', (e) => {

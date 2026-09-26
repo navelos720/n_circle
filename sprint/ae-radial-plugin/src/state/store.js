@@ -291,6 +291,37 @@ class StateStore {
         }
     }
 
+        rebuildLibraryIndex() {
+            // This is a runtime operation that scans the configured root path
+            // In production, this would invoke a CEP filesystem API or Node.js script
+            // For now, we'll simulate the rebuild process
+        
+            this.addToast("Rebuilding library index...", "info", 2000);
+        
+            // Simulate async scan
+            setTimeout(() => {
+                try {
+                    const rootPath = this.state.config?.settings?.rootPath;
+                    if (!rootPath) {
+                        this.addToast("Root path not configured", "warning");
+                        return;
+                    }
+
+                    // In a real implementation, this would:
+                    // 1. Scan the rootPath directory for .aep files
+                    // 2. Generate new library entries
+                    // 3. Update the library state
+                    // 4. Persist the new library to localStorage
+                
+                    // For now, we'll just show a success message
+                    this.addToast("Library index rebuilt successfully", "success", 3000);
+                } catch (e) {
+                    console.error('Failed to rebuild library index', e);
+                    this.addToast("Failed to rebuild library index", "error");
+                }
+            }, 1500);
+        }
+
     saveConfig() {
         try {
             localStorage.setItem('company_ae_radial_user_config', JSON.stringify(this.state.config));

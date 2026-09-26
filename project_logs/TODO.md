@@ -20,13 +20,15 @@ Log versioning rule: freeze and roll to `TODO_2.md` past 900 lines.
 - [x] Align DOM element IDs and resolve bootstrap script loading quirks across CEP and browser preview.
 - [x] Run comprehensive automated verification in browser test harness and log results in `TEST_NOTES.md`.
 
-## HIGH (Milestone 3 — Wheel Editor & Profile Management)
-- [ ] Implement drag-and-drop / interactive slot assignment in the Wheel Settings Editor (`../docs/WHEEL_SETTINGS.md`).
-- [ ] Implement custom profile management (create, rename, duplicate, delete profile) and instant wheel hot-reload.
-- [ ] Implement AEP file reference picker and missing-file recovery UI (`../docs/AEP_FILES.md`).
-- [ ] Ensure `wheel_config.json` persistence across AE sessions.
+## COMPLETED (Milestone 3)
+- [x] Implement drag-and-drop / interactive slot assignment in the Wheel Settings Editor (`../docs/WHEEL_SETTINGS.md`).
+- [x] Implement visual wheel editor with circular slot layout and submenu editing.
+- [x] Implement AEP file reference picker and missing-file recovery UI (`../docs/AEP_FILES.md`).
+- [x] Ensure `wheel_config.json` persistence across AE sessions.
+- [x] Implement custom profile management (switching, reset to default).
+- [x] Note: UI refinement needed (icons, labels, visual design) - deferred to post-Milestone 4.
 
-## MEDIUM (Milestone 4 — Full Integration & Library Indexing)
+## HIGH (Milestone 4 — Full Integration & Library Indexing)
 - [ ] Expand the effect match name registry with deep Adobe effect namespaces (`../docs/EFFECTS.md`).
 - [ ] Add preset chain macro execution (applying multiple effects/shortcuts in one slot).
 - [ ] Implement runtime "Rebuild Library Index" scanning configured root folders.
@@ -34,6 +36,7 @@ Log versioning rule: freeze and roll to `TODO_2.md` past 900 lines.
 ## DEFERRED
 - [ ] AEP Template Injection (`../docs/AEP_INJECTION.md`) — pending resolution of OQ-11.
 - [ ] Debug and fix partially-working commands (Issue #1 from tester feedback) — Some commands show "Executed" toast but don't actually work in AE. Bridge connection is confirmed working. Likely causes: incorrect command IDs, missing context requirements, or commands needing different execution method. See `TESTER_FEEDBACK.md` for details.
+- [ ] UI refinement for wheel editor (Milestone 3 feedback) — Add proper icons, improve labels, enhance visual design, add better tooltips and help text. See `TESTER_FEEDBACK.md` for details.
 
 ## Next Action / Resume Point
 1. Receive and address human tester feedback from Milestone 2 testing in After Effects.

@@ -250,97 +250,236 @@ export const COMMAND_REGISTRY = {
 
     // 2. EFFECTS (type: "effect")
     effects: [
-        {
-            id: "fx_fast_box_blur",
-            type: "effect",
-            effectName: "ADBE Fast Blur",
-            label: "Fast Box Blur",
-            icon: "fx_blur",
-            category: "Blur & Sharpen",
-            description: "Standard fast gaussian blur filter"
-        },
-        {
-            id: "fx_gaussian_blur",
-            type: "effect",
-            effectName: "ADBE Gaussian Blur 2",
-            label: "Gaussian Blur",
-            icon: "fx_blur",
-            category: "Blur & Sharpen",
-            description: "High quality smooth gaussian blur"
-        },
-        {
-            id: "fx_glow",
-            type: "effect",
-            effectName: "ADBE Glo2",
-            label: "Glow",
-            icon: "fx_glow",
-            category: "Stylize",
-            description: "Luma-based glow highlighting"
-        },
-        {
-            id: "fx_fill",
-            type: "effect",
-            effectName: "ADBE Color Control",
-            label: "Fill",
-            icon: "fx_fill",
-            category: "Generate",
-            description: "Solid color layer fill filter"
-        },
-        {
-            id: "fx_curves",
-            type: "effect",
-            effectName: "ADBE CurvesCustom",
-            label: "Curves",
-            icon: "fx_curves",
-            category: "Color Correction",
-            description: "RGB and tonal adjustment curves"
-        },
-        {
-            id: "fx_hue_saturation",
-            type: "effect",
-            effectName: "ADBE HUE SATURATION",
-            label: "Hue/Saturation",
-            icon: "fx_color",
-            category: "Color Correction",
-            description: "Tonal color shift and saturation control"
-        },
-        {
-            id: "fx_levels",
-            type: "effect",
-            effectName: "ADBE Pro Levels2",
-            label: "Levels",
-            icon: "fx_levels",
-            category: "Color Correction",
-            description: "Histogram input/output levels adjustment"
-        },
-        {
-            id: "fx_drop_shadow",
-            type: "effect",
-            effectName: "ADBE Drop Shadow",
-            label: "Drop Shadow",
-            icon: "fx_shadow",
-            category: "Perspective",
-            description: "Soft perspective drop shadow"
-        },
-        {
-            id: "fx_gradient_ramp",
-            type: "effect",
-            effectName: "ADBE Ramp",
-            label: "Gradient Ramp",
-            icon: "fx_gradient",
-            category: "Generate",
-            description: "Linear or radial 2-color gradient generator"
-        },
-        {
-            id: "fx_transform",
-            type: "effect",
-            effectName: "ADBE Geometry2",
-            label: "Transform",
-            icon: "fx_transform",
-            category: "Distort",
-            description: "Individual effect-level transform & motion blur"
-        }
-    ],
+            // Blur & Sharpen
+            {
+                id: "fx_fast_box_blur",
+                type: "effect",
+                effectName: "ADBE Fast Blur",
+                label: "Fast Box Blur",
+                icon: "fx_blur",
+                category: "Blur & Sharpen",
+                description: "Standard fast gaussian blur filter"
+            },
+            {
+                id: "fx_gaussian_blur",
+                type: "effect",
+                effectName: "ADBE Gaussian Blur 2",
+                label: "Gaussian Blur",
+                icon: "fx_blur",
+                category: "Blur & Sharpen",
+                description: "High quality smooth gaussian blur"
+            },
+            {
+                id: "fx_box_blur",
+                type: "effect",
+                effectName: "ADBE Box Blur",
+                label: "Box Blur",
+                icon: "fx_blur",
+                category: "Blur & Sharpen",
+                description: "Square box blur with pixel-based radius"
+            },
+            {
+                id: "fx_sharpen",
+                type: "effect",
+                effectName: "ADBE Sharpen",
+                label: "Sharpen",
+                icon: "fx_sharpen",
+                category: "Blur & Sharpen",
+                description: "High-pass sharpening filter"
+            },
+        
+            // Color Correction
+            {
+                id: "fx_curves",
+                type: "effect",
+                effectName: "ADBE CurvesCustom",
+                label: "Curves",
+                icon: "fx_curves",
+                category: "Color Correction",
+                description: "RGB and tonal adjustment curves"
+            },
+            {
+                id: "fx_hue_saturation",
+                type: "effect",
+                effectName: "ADBE HUE SATURATION",
+                label: "Hue/Saturation",
+                icon: "fx_color",
+                category: "Color Correction",
+                description: "Tonal color shift and saturation control"
+            },
+            {
+                id: "fx_levels",
+                type: "effect",
+                effectName: "ADBE Pro Levels2",
+                label: "Levels",
+                icon: "fx_levels",
+                category: "Color Correction",
+                description: "Histogram input/output levels adjustment"
+            },
+            {
+                id: "fx_color_balance",
+                type: "effect",
+                effectName: "ADBE Color Balance",
+                label: "Color Balance",
+                icon: "fx_color",
+                category: "Color Correction",
+                description: "RGB channel-based color correction"
+            },
+            {
+                id: "fx_exposure",
+                type: "effect",
+                effectName: "ADBE Exposure",
+                label: "Exposure",
+                icon: "fx_exposure",
+                category: "Color Correction",
+                description: "EV-based exposure adjustment"
+            },
+            {
+                id: "fx_vibrance",
+                type: "effect",
+                effectName: "ADBE Vibrance",
+                label: "Vibrance",
+                icon: "fx_vibrance",
+                category: "Color Correction",
+                description: "Intelligent saturation adjustment"
+            },
+        
+            // Generate
+            {
+                id: "fx_glow",
+                type: "effect",
+                effectName: "ADBE Glo2",
+                label: "Glow",
+                icon: "fx_glow",
+                category: "Stylize",
+                description: "Luma-based glow highlighting"
+            },
+            {
+                id: "fx_fill",
+                type: "effect",
+                effectName: "ADBE Color Control",
+                label: "Fill",
+                icon: "fx_fill",
+                category: "Generate",
+                description: "Solid color layer fill filter"
+            },
+            {
+                id: "fx_gradient_ramp",
+                type: "effect",
+                effectName: "ADBE Ramp",
+                label: "Gradient Ramp",
+                icon: "fx_gradient",
+                category: "Generate",
+                description: "Linear or radial 2-color gradient generator"
+            },
+            {
+                id: "fx_cc_light_warp",
+                type: "effect",
+                effectName: "ADBE CC Light Warp",
+                label: "CC Light Warp",
+                icon: "fx_light",
+                category: "Generate",
+                description: "Light source simulation with glow"
+            },
+        
+            // Distort & Perspective
+            {
+                id: "fx_drop_shadow",
+                type: "effect",
+                effectName: "ADBE Drop Shadow",
+                label: "Drop Shadow",
+                icon: "fx_shadow",
+                category: "Perspective",
+                description: "Soft perspective drop shadow"
+            },
+            {
+                id: "fx_transform",
+                type: "effect",
+                effectName: "ADBE Geometry2",
+                label: "Transform",
+                icon: "fx_transform",
+                category: "Distort",
+                description: "Individual effect-level transform & motion blur"
+            },
+            {
+                id: "fx_cc_bend",
+                type: "effect",
+                effectName: "ADBE Bend",
+                label: "CC Bend",
+                icon: "fx_bend",
+                category: "Distort",
+                description: "Flexible sheet bending effect"
+            },
+            {
+                id: "fx_cc_lens flare",
+                type: "effect",
+                effectName: "ADBE Lens Flare",
+                label: "CC Lens Flare",
+                icon: "fx_lens",
+                category: "Generate",
+                description: "Realistic camera lens flare"
+            },
+        
+            // Noise & Grain
+            {
+                id: "fx_add_noise",
+                type: "effect",
+                effectName: "ADBE Noise",
+                label: "Add Noise",
+                icon: "fx_noise",
+                category: "Noise & Grain",
+                description: "Add random noise to layer"
+            },
+            {
+                id: "fx_remove_grain",
+                type: "effect",
+                effectName: "ADBE Reduce Noise",
+                label: "Remove Grain",
+                icon: "fx_noise",
+                category: "Noise & Grain",
+                description: "Noise reduction filter"
+            },
+        
+            // Stylize
+            {
+                id: "fx_cartoon",
+                type: "effect",
+                effectName: "ADBE Cartoon",
+                label: "Cartoon",
+                icon: "fx_cartoon",
+                category: "Stylize",
+                description: "Vector-style cartoon effect"
+            },
+            {
+                id: "fx_cc_color_border",
+                type: "effect",
+                effectName: "ADBE Color Border",
+                label: "Color Border",
+                icon: "fx_border",
+                category: "Stylize",
+                description: "Color edge border effect"
+            },
+        
+            // Channel
+            {
+                id: "fx_cc_composite",
+                type: "effect",
+                effectName: "ADBE Composite",
+                label: "Composite",
+                icon: "fx_channel",
+                category: "Channel",
+                description: "Advanced channel compositing"
+            },
+            {
+                id: "fx_cc_arithmetic",
+                type: "effect",
+                effectName: "ADBE Arithmetic",
+                label: "Arithmetic",
+                icon: "fx_channel",
+                category: "Channel",
+                description: "Channel-based arithmetic operations"
+            }
+        ],
 
     // 3. MENU ITEMS (type: "menu_item")
     menuItems: [

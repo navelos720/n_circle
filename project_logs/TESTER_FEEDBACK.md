@@ -60,6 +60,31 @@ Log versioning rule: freeze and roll to `TESTER_FEEDBACK_2.md` past 900 lines.
 
 ---
 
+## UI REFINEMENT FEEDBACK (Milestone 3 Testing)
+
+### Issue: Wheel Editor UI Needs Polish
+**Status**: 🟡 DOCUMENTED - Will be addressed after core functionality  
+**Priority**: MEDIUM - Affects usability but not core functionality  
+**Feedback**: "The UI needs to be refined with proper icons and words"
+
+**What needs improvement**:
+- Icons: Currently using text labels only; need proper visual icons for each item type
+- Labels: Some labels could be clearer or more descriptive
+- Visual design: Wheel slots need better visual styling and feedback
+- Empty states: Empty slots need clearer visual indicators
+- Instructions: Hover tips and help text could be more helpful
+
+**Recommended approach** (to be implemented later):
+1. Add icon support to library items (icon field in schema)
+2. Implement icon rendering in wheel slots
+3. Improve empty slot visual states
+4. Add better tooltips and help text
+5. Consider color-coding by item type
+
+**Next Steps**: Document in TODO.md for post-Milestone 4 implementation
+
+---
+
 ## FEATURE SUGGESTIONS (FOR LATER - NOT CURRENT PRIORITY)
 
 ### Suggestion #2: Standalone Wheel Activation
